@@ -20,17 +20,14 @@
 // Dependencies: Firebase SDK (loaded via CDN in base.html)
 // ============================================
 
-// Firebase project credentials — from Firebase Console > Project Settings
-// These are safe to expose in client-side code (they're like API keys, not secrets)
-const firebaseConfig = {
-    apiKey: "AIzaSyAmEdt83_McgV7MR1gFXp8w4isepzLqQrw",
-    authDomain: "updated-skill-exchange-network.firebaseapp.com",
-    projectId: "updated-skill-exchange-network",
-    storageBucket: "updated-skill-exchange-network.firebasestorage.app",
-    messagingSenderId: "29560330648",
-    appId: "1:29560330648:web:47db90ac713b8c1be673ed",
-    measurementId: "G-M7G4KTBGX5"
-};
+// Firebase project credentials — loaded from environment variables via Django
+// The config is injected into window.FIREBASE_CONFIG by base.html
+// (which reads it from settings.py → .env file)
+const firebaseConfig = window.FIREBASE_CONFIG || {};
+
+if (!window.FIREBASE_CONFIG) {
+    console.warn('⚠️ Firebase config not found on window.FIREBASE_CONFIG. Make sure base.html is loaded first.');
+}
 
 // Firebase service instances — initialized once, used throughout the file
 let app, auth, db, storage;

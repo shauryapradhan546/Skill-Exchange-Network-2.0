@@ -16,16 +16,20 @@ Important sections:
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 # Build paths relative to the project root directory
 # BASE_DIR = d:\Updated Field Project\updated_skill_exchange_network
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: Change this to a random string in production!
-SECRET_KEY = 'change-this-to-your-secret-key'
+# Load environment variables from .env file
+load_dotenv(BASE_DIR / '.env')
+
+# SECURITY WARNING: Keep the secret key used in production secret!
+SECRET_KEY = os.getenv('SECRET_KEY', 'change-this-to-your-secret-key')
 
 # SECURITY WARNING: Set to False in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 'yes')
 
 # List of allowed hostnames — add your domain here for production
 ALLOWED_HOSTS = []
@@ -90,6 +94,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',    # Adds 'request' object to templates
                 'django.contrib.auth.context_processors.auth',   # Adds 'user' and 'perms' to templates
                 'django.contrib.messages.context_processors.messages',  # Adds 'messages' for flash alerts
+                'core.context_processors.firebase_config',       # Adds Firebase config to all templates
             ],
         },
     },
@@ -162,6 +167,18 @@ REST_FRAMEWORK = {
 # To enable: replace with your Firebase service account JSON credentials
 
 FIREBASE_SERVICE_ACCOUNT = {}
+
+# Firebase client-side config — read from .env file
+# These are passed to JavaScript via the 'firebase_config' context processor
+FIREBASE_CONFIG = {
+    'apiKey': os.getenv('FIREBASE_API_KEY', ''),
+    'authDomain': os.getenv('FIREBASE_AUTH_DOMAIN', ''),
+    'projectId': os.getenv('FIREBASE_PROJECT_ID', ''),
+    'storageBucket': os.getenv('FIREBASE_STORAGE_BUCKET', ''),
+    'messagingSenderId': os.getenv('FIREBASE_MESSAGING_SENDER_ID', ''),
+    'appId': os.getenv('FIREBASE_APP_ID', ''),
+    'measurementId': os.getenv('FIREBASE_MEASUREMENT_ID', ''),
+}
 
 
 # ============================================

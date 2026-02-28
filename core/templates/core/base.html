@@ -437,20 +437,17 @@
          This initializes Firebase Auth in the browser and exposes
          window.firebaseAuth for Google Sign-In, email auth, etc.
          The auth functions are used on login.html and register.html. -->
+    <!-- Firebase config injected from server-side environment variables -->
+    <script>
+        window.FIREBASE_CONFIG = {{ firebase_config_json|safe }};
+    </script>
+
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
-        // ✅ YOUR ACTUAL FIREBASE CONFIG
-        const firebaseConfig = {
-            apiKey: "AIzaSyAmEdt83_McgV7MR1gFXp8w4isepzLqQrw",
-            authDomain: "updated-skill-exchange-network.firebaseapp.com",
-            projectId: "updated-skill-exchange-network",
-            storageBucket: "updated-skill-exchange-network.firebasestorage.app",
-            messagingSenderId: "29560330648",
-            appId: "1:29560330648:web:47db90ac713b8c1be673ed",
-            measurementId: "G-M7G4KTBGX5"
-        };
+        // ✅ Firebase config loaded from environment variables (via Django context processor)
+        const firebaseConfig = window.FIREBASE_CONFIG;
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
