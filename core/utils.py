@@ -7,8 +7,6 @@ except ImportError:
     TwilioClient = None
 
 
-# Email
-
 def send_session_email(exchange, subject, body_lines):
     recipients = list(filter(None, [exchange.requester.email, exchange.receiver.email]))
     if not recipients:
@@ -31,8 +29,6 @@ def send_email_to_user(email, subject, body):
         print(f"❌ Email error: {e}")
 
 
-# WhatsApp
-
 def send_whatsapp_to_user(phone, message_body):
     if not phone or not TwilioClient:
         return
@@ -53,8 +49,6 @@ def send_whatsapp_to_user(phone, message_body):
     except Exception as e:
         print(f"❌ WhatsApp error: {e}")
 
-
-# Notifications
 
 def send_schedule_notification(exchange, triggered_by_user):
     partner = exchange.receiver if exchange.requester == triggered_by_user else exchange.requester

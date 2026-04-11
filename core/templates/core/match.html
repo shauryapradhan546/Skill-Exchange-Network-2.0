@@ -26,14 +26,12 @@
 
 <div class="container py-5">
     {% if skill %}
-    <!-- Back Button -->
     <div class="mb-4" data-aos="fade-right">
         <a href="{% url 'browse' %}" class="btn btn-outline-secondary fw-bold rounded-pill shadow-sm px-4">
             <i class="fas fa-arrow-left me-2"></i>Back to Browse
         </a>
     </div>
 
-    <!-- Teachers Grid -->
     {% if teachers %}
     <div class="row g-4">
         {% for teacher_obj in teachers %}
@@ -115,7 +113,6 @@
         {% endfor %}
     </div>
 
-    <!-- Request Modal (Single Instance) -->
     <div class="modal fade" id="requestModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
@@ -188,7 +185,6 @@
         </div>
     </div>
     {% else %}
-    <!-- No Teachers Available -->
     <div class="modern-card bg-white border-0 shadow-sm text-center py-5 rounded-4" data-aos="zoom-in">
         <div class="mb-4">
             <i class="fas fa-user-slash text-muted" style="font-size: 5rem; opacity: 0.3;"></i>
@@ -204,7 +200,6 @@
     {% endif %}
 
     {% else %}
-    <!-- No Skill Selected -->
     <div class="modern-card bg-white border-0 shadow-sm text-center py-5 rounded-4" data-aos="zoom-in">
         <div class="mb-4">
             <i class="fas fa-info-circle text-primary" style="font-size: 5rem; opacity: 0.3;"></i>

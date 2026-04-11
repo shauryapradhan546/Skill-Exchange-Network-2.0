@@ -1,25 +1,11 @@
 {% extends "core/base.html" %}
 {% load static %}
-{% comment %}
-    add_skill.html — Add Teaching Skill Page
 
-    Form for users to add a skill they can teach. Skills are grouped by
-    category using Django's regroup template tag. Skills the user
-    already teaches are shown as disabled options.
-
-    Template variables from views.py/add_skill():
-      - skills: All available Skill objects
-      - teaching_skill_ids: List of skill IDs this user already teaches
-
-    Form fields: skill_id (dropdown), proficiency (dropdown),
-    available_time (text), notes (textarea)
-    POSTs to views.py/add_skill() which creates a UserTeaches record.
-{% endcomment %}
 
 {% block title %}Add Skill - Skill Exchange{% endblock %}
 
 {% block content %}
-<!-- ✅ HEADER -->
+
 <div class="position-relative overflow-hidden pt-5 pb-5 mb-4"
     style="background: white; border-bottom: 1px solid var(--border-color);">
     <div class="position-absolute top-0 start-0 w-100 h-100"
@@ -38,14 +24,14 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <!-- Back Button -->
+            
             <div class="mb-4" data-aos="fade-right">
                 <a href="{% url 'profile' %}" class="btn btn-outline-secondary fw-bold rounded-pill shadow-sm px-4">
                     <i class="fas fa-arrow-left me-2"></i>Back to Profile
                 </a>
             </div>
 
-            <!-- Add Skill Form -->
+            
             <div class="modern-card bg-white border-0 shadow-sm p-4 p-md-5" style="border-radius: 20px;"
                 data-aos="fade-up">
                 <h3 class="text-dark mb-4 fw-bold">
@@ -56,7 +42,7 @@
                 <form method="post">
                     {% csrf_token %}
 
-                    <!-- Skill Selection -->
+                    
                     <div class="mb-4">
                         <label class="form-label text-dark fw-bold">
                             <i class="fas fa-book me-2 text-primary"></i>Select Skill *
@@ -78,7 +64,7 @@
                         </select>
                     </div>
 
-                    <!-- Proficiency Level -->
+                    
                     <div class="mb-4">
                         <label class="form-label text-dark fw-bold">
                             <i class="fas fa-star me-2 text-warning"></i>Your Proficiency Level *
@@ -92,7 +78,7 @@
                         </select>
                     </div>
 
-                    <!-- Availability -->
+                    
                     <div class="mb-4">
                         <label class="form-label text-dark fw-bold">
                             <i class="fas fa-clock me-2 text-info"></i>When are you available?
@@ -102,7 +88,7 @@
                             style="border-radius: 12px;">
                     </div>
 
-                    <!-- Notes -->
+                    
                     <div class="mb-4">
                         <label class="form-label text-dark fw-bold">
                             <i class="fas fa-comment me-2 text-muted"></i>Additional Notes (Optional)
@@ -112,7 +98,7 @@
                             style="border-radius: 12px; resize: none;"></textarea>
                     </div>
 
-                    <!-- Info Box -->
+                    
                     <div class="p-3 mb-4 bg-light rounded-3 border-start border-4 border-info shadow-sm">
                         <p class="text-muted mb-0 fw-medium">
                             <i class="fas fa-info-circle me-2 text-info"></i>
@@ -121,7 +107,7 @@
                         </p>
                     </div>
 
-                    <!-- Submit Button -->
+                    
                     <div class="d-flex flex-column flex-sm-row gap-3">
                         <button type="submit" class="btn btn-success btn-lg flex-fill rounded-pill shadow-sm fw-bold">
                             <i class="fas fa-plus me-2"></i>Add Skill

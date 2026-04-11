@@ -1,21 +1,13 @@
 {% extends "core/base.html" %}
 {% load static %}
-{% comment %}
-    login.html — Login Page
 
-    Simple email/password login form. POSTs to views.py/login_view()
-    which authenticates against Django's User model.
-
-    The form uses csrf_token for security. On success, the user
-    is redirected to /profile/. On failure, a flash message is shown.
-{% endcomment %}
 
 {% block title %}Login - Skill Exchange{% endblock %}
 
 {% block content %}
 <div class="position-relative overflow-hidden"
     style="min-height: calc(100vh - 80px); display: flex; align-items: center; justify-content: center; padding: 60px 20px;">
-    <!-- Decorative faint circles -->
+    
     <div class="position-absolute rounded-circle"
         style="width: 400px; height: 400px; background: rgba(74, 144, 226, 0.05); top: -100px; left: -100px; z-index: 0;">
     </div>
@@ -28,7 +20,7 @@
             <div class="col-lg-5 col-md-7 mt-4">
                 <div class="modern-card border-0 shadow-lg p-5 bg-white" data-aos="zoom-in"
                     style="border-radius: 24px;">
-                    <!-- Header -->
+                    
                     <div class="text-center mb-4">
                         <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-light text-primary mb-3 shadow-sm"
                             style="width: 80px; height: 80px; font-size: 2.5rem;">
@@ -39,7 +31,7 @@
                             journey</p>
                     </div>
 
-                    <!-- Django Login Form -->
+                    
                     <form method="post">
                         {% csrf_token %}
 
@@ -75,7 +67,7 @@
 
 
 
-                    <!-- Register Link -->
+                    
                     <div class="text-center mt-4 pt-4 border-top">
                         <p class="text-muted mb-3 fw-medium">Don't have an account?</p>
                         <a href="{% url 'register' %}"

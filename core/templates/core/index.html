@@ -1,32 +1,31 @@
 {% extends "core/base.html" %}
 {% load static %}
-{% comment %}
-    index.html — Home Page
-
-    This is the landing page users see first. It extends base.html and fills
-    the content block with:
-      1. Hero section — headline, stats, CTA buttons, floating skill cards
-      2. How It Works — 3-step explanation (Create Profile → Find Match → Learn)
-      3. Features — 4 value propositions (Free, Secure, Flexible, Community)
-      4. CTA — Final call-to-action to register or browse
-
-    Uses AOS (Animate On Scroll) library for scroll-triggered animations.
-    Template variables from views.py/index():
-      - total_users, total_skills, total_exchanges (platform stats)
-      - teaches_count, incoming_count (personal stats, if logged in)
-{% endcomment %}
 
 {% block title %}Home - Premium Skill Exchange{% endblock %}
 
+{% block before_content %}
+<section id="skills-ticker-section" class="skills-ticker-section" style="display:none; margin-top: 76px;">
+    <div class="skills-ticker-header">
+        <span class="skills-ticker-live-dot"></span>
+        <span class="skills-ticker-header-text">Skills Available to Learn Right Now</span>
+        <a href="{% url 'browse' %}" class="skills-ticker-browse-btn">
+            Browse All <i class="fas fa-arrow-right ms-1"></i>
+        </a>
+    </div>
+    <div class="skills-ticker-track-wrap">
+        <div class="skills-ticker-track" id="skills-ticker-track">
+        </div>
+    </div>
+</section>
+{% endblock %}
+
 {% block content %}
-<!-- HERO SECTION — Full-width landing area with headline, stats, and floating cards.
-     Split into two columns: left side has text/buttons, right side has animated illustration. -->
 <div class="hero-section position-relative overflow-hidden pt-5">
     <div class="container position-relative z-1">
         <div class="row align-items-center min-vh-75 py-5">
             <div class="col-lg-6" data-aos="fade-right">
 
-                <h1 class="hero-title text-dark fw-bolder mb-3" style="font-size: 3.5rem; line-height: 1.1;">
+                <h1 class="hero-title fw-bolder mb-3" style="font-size: 3.5rem; line-height: 1.1;">
                     Exchange Skills,<br>
                     <span class="text-primary">Transform Your Future</span>
                 </h1>
@@ -50,9 +49,6 @@
                     </div>
                 </div>
 
-                <!-- CTA buttons change based on login state:
-                     Logged in → "Explore Skills" + "My Dashboard"
-                     Logged out → "Get Started Free" + "Login Here" -->
                 <div class="hero-buttons d-flex gap-3 flex-wrap">
                     {% if user.is_authenticated %}
                     <a href="{% url 'browse' %}" class="btn btn-primary btn-lg px-4 shadow-sm pulse-btn">
@@ -72,19 +68,15 @@
                 </div>
             </div>
 
-            <!-- Right column — Animated illustration with floating cards
-                 representing different skill categories (Web Dev, Design, AI, Mobile).
-                 A center circle with exchange icon ties them together visually. -->
             <div class="col-lg-6 mt-5 mt-lg-0" data-aos="fade-left">
                 <div class="hero-illustration position-relative w-100" style="height: 500px;">
-                    <!-- Floating Cards -->
                     <div class="floating-card modern-card p-3 d-flex align-items-center gap-3 position-absolute z-2 card-1"
                         style="top: 10%; left: 0;">
                         <div class="icon-circle bg-primary text-white d-flex align-items-center justify-content-center rounded-circle"
                             style="width: 50px; height: 50px;">
                             <i class="fas fa-code fs-4"></i>
                         </div>
-                        <span class="fw-bold text-dark">Web Dev</span>
+                        <span class="fw-bold">Web Dev</span>
                     </div>
                     <div class="floating-card modern-card p-3 d-flex align-items-center gap-3 position-absolute z-2 card-2"
                         style="top: 20%; right: 0;">
@@ -92,7 +84,7 @@
                             style="width: 50px; height: 50px;">
                             <i class="fas fa-paint-brush fs-4"></i>
                         </div>
-                        <span class="fw-bold text-dark">Design</span>
+                        <span class="fw-bold">Design</span>
                     </div>
                     <div class="floating-card modern-card p-3 d-flex align-items-center gap-3 position-absolute z-2 card-3"
                         style="bottom: 20%; left: 5%;">
@@ -100,7 +92,7 @@
                             style="width: 50px; height: 50px;">
                             <i class="fas fa-brain fs-4"></i>
                         </div>
-                        <span class="fw-bold text-dark">AI & ML</span>
+                        <span class="fw-bold">AI &amp; ML</span>
                     </div>
                     <div class="floating-card modern-card p-3 d-flex align-items-center gap-3 position-absolute z-2 card-4"
                         style="bottom: 10%; right: 10%;">
@@ -108,14 +100,13 @@
                             style="width: 50px; height: 50px;">
                             <i class="fas fa-mobile-alt fs-4"></i>
                         </div>
-                        <span class="fw-bold text-dark">Mobile</span>
+                        <span class="fw-bold">Mobile</span>
                     </div>
 
                     <div class="center-circle position-absolute top-50 start-50 translate-middle rounded-circle d-flex align-items-center justify-content-center z-1"
-                        style="width: 250px; height: 250px; background: white; box-shadow: var(--shadow-xl); border: 2px solid var(--border-color);">
+                        style="width: 250px; height: 250px; background: var(--bg-card); box-shadow: var(--shadow-xl); border: 2px solid var(--border-color);">
                         <i class="fas fa-exchange-alt text-primary" style="font-size: 5rem;"></i>
                     </div>
-                    <!-- Decorative back circles -->
                     <div class="position-absolute top-50 start-50 translate-middle rounded-circle border border-primary z-0"
                         style="width: 350px; height: 350px; opacity: 0.1;"></div>
                     <div class="position-absolute top-50 start-50 translate-middle rounded-circle border border-primary z-0"
@@ -126,8 +117,93 @@
     </div>
 </div>
 
-<!-- ✨ HOW IT WORKS SECTION -->
-<div class="py-5" style="background: white;">
+
+
+{% if recent_teachers %}
+<div class="py-5 recent-teachers-section">
+    <div class="container py-4">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="badge bg-success px-3 py-2 rounded-pill mb-3 fs-6 new-pulse-badge">
+                <i class="fas fa-bolt me-1"></i>New Teachers
+            </span>
+            <h2 class="fw-bolder" style="font-size: 2.5rem; color: var(--text-main);">
+                🔥 Recently Available Teachers
+            </h2>
+            <p class="text-muted fs-5">These instructors just joined and are ready to teach!</p>
+        </div>
+
+        <div class="row g-4 pt-2">
+            {% for teach in recent_teachers %}
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:0 }}00">
+                <div class="modern-card teacher-highlight-card h-100 p-4 position-relative overflow-hidden border-0">
+                    <div class="position-absolute top-0 end-0 m-3 z-3">
+                        <span class="badge new-glow-badge px-2 py-1 rounded-pill fw-bold" style="font-size: 0.7rem;">
+                            <i class="fas fa-sparkles me-1"></i>NEW
+                        </span>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="teacher-avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                            style="width: 52px; height: 52px; font-size: 1.3rem; font-weight: 700;">
+                            {{ teach.user.first_name|default:teach.user.username|make_list|first|upper }}
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-0" style="font-size: 1.05rem;">
+                                {{ teach.user.first_name }} {{ teach.user.last_name }}
+                            </h5>
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>Joined {{ teach.created_at|timesince }} ago
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-semibold" style="font-size: 0.85rem;">
+                            <i class="fas fa-graduation-cap me-1"></i>{{ teach.skill.name }}
+                        </span>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <span class="badge rounded-pill px-2 py-1
+                            {% if teach.proficiency == 'expert' %}bg-success
+                            {% elif teach.proficiency == 'advanced' %}bg-info
+                            {% elif teach.proficiency == 'intermediate' %}bg-warning text-dark
+                            {% else %}bg-secondary{% endif %}">
+                            <i class="fas fa-star me-1"></i>{{ teach.get_proficiency_display }}
+                        </span>
+                        <span class="badge bg-light text-muted border px-2 py-1 rounded-pill">
+                            <i class="fas fa-calendar-check me-1"></i>{{ teach.available_time }}
+                        </span>
+                    </div>
+
+                    {% if teach.notes %}
+                    <p class="text-muted small mb-3" style="line-height: 1.5;">
+                        <i class="fas fa-quote-left me-1 text-primary opacity-50" style="font-size: 0.7rem;"></i>
+                        {{ teach.notes|truncatewords:15 }}
+                    </p>
+                    {% endif %}
+
+                    <div class="mt-auto pt-2">
+                        <a href="{% url 'match' %}?skill_id={{ teach.skill.id }}"
+                            class="btn btn-primary w-100 rounded-pill shadow-sm fw-semibold py-2">
+                            Request Exchange <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-5" data-aos="fade-up">
+            <a href="{% url 'browse' %}" class="btn btn-outline-primary btn-lg px-5 rounded-pill fw-bold">
+                <i class="fas fa-compass me-2"></i>Browse All Skills
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="py-5 section-how-it-works">
     <div class="container py-5">
         <div class="text-center mb-5" data-aos="fade-up">
             <h2 class="fw-bolder" style="font-size: 2.5rem; color: var(--text-main);">How It Works</h2>
@@ -136,9 +212,9 @@
 
         <div class="row g-4 pt-3">
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                <div class="modern-card text-center h-100 border-0" style="background: var(--bg-body);">
-                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white text-primary mb-4 shadow-sm"
-                        style="width: 80px; height: 80px; font-size: 2rem;">
+                <div class="modern-card text-center h-100 border-0">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle text-primary mb-4 shadow-sm"
+                        style="width: 80px; height: 80px; font-size: 2rem; background: var(--bg-body);">
                         <i class="fas fa-user-plus"></i>
                     </div>
                     <h4 class="fw-bold mb-3">1. Create Profile</h4>
@@ -148,9 +224,9 @@
             </div>
 
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                <div class="modern-card text-center h-100 border-0" style="background: var(--bg-body);">
-                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white text-success mb-4 shadow-sm"
-                        style="width: 80px; height: 80px; font-size: 2rem;">
+                <div class="modern-card text-center h-100 border-0">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle text-success mb-4 shadow-sm"
+                        style="width: 80px; height: 80px; font-size: 2rem; background: var(--bg-body);">
                         <i class="fas fa-handshake"></i>
                     </div>
                     <h4 class="fw-bold mb-3">2. Find a Match</h4>
@@ -160,9 +236,9 @@
             </div>
 
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                <div class="modern-card text-center h-100 border-0" style="background: var(--bg-body);">
-                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white text-info mb-4 shadow-sm"
-                        style="width: 80px; height: 80px; font-size: 2rem;">
+                <div class="modern-card text-center h-100 border-0">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle text-info mb-4 shadow-sm"
+                        style="width: 80px; height: 80px; font-size: 2rem; background: var(--bg-body);">
                         <i class="fas fa-video"></i>
                     </div>
                     <h4 class="fw-bold mb-3">3. Start Learning</h4>
@@ -174,7 +250,6 @@
     </div>
 </div>
 
-<!-- ✨ FEATURES SECTION -->
 <div class="py-5" style="background: var(--bg-body);">
     <div class="container py-5">
         <div class="text-center mb-5" data-aos="fade-up">
@@ -194,7 +269,7 @@
             <div class="col-md-3 col-sm-6" data-aos="flip-left" data-aos-delay="200">
                 <div class="modern-card text-center h-100 px-3 py-4">
                     <i class="fas fa-shield-alt text-success mb-3" style="font-size: 2.5rem;"></i>
-                    <h5 class="fw-bold mt-2">Safe & Secure</h5>
+                    <h5 class="fw-bold mt-2">Safe &amp; Secure</h5>
                     <p class="text-muted small mb-0">Verified university students and safe interactions.</p>
                 </div>
             </div>
@@ -218,9 +293,7 @@
     </div>
 </div>
 
-<!-- ✨ CTA SECTION -->
-<div class="py-5 position-relative overflow-hidden" style="background: white;">
-    <!-- Background accents -->
+<div class="py-5 section-cta position-relative overflow-hidden">
     <div class="position-absolute top-0 start-0 w-100 h-100"
         style="background: radial-gradient(circle at center, rgba(74, 144, 226, 0.05) 0%, transparent 70%);"></div>
 
@@ -244,14 +317,12 @@
     </div>
 </div>
 
-<!-- AOS (Animate On Scroll) — External library that triggers animations
-     when elements scroll into view. data-aos="fade-up" on elements above
-     makes them fade in and slide up as user scrolls. -->
+<div id="skill-toast-container"></div>
+
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
 <style>
-    /* Base overrides */
     :root {
         --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
     }
@@ -261,81 +332,536 @@
     }
 
     @keyframes pulse {
-
-        0%,
-        100% {
+        0%, 100% {
             box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.4);
             transform: scale(1);
         }
-
         50% {
             box-shadow: 0 0 0 15px rgba(74, 144, 226, 0);
             transform: scale(1.02);
         }
     }
 
-    /* Floating Animations */
     .floating-card {
         animation: float 4s ease-in-out infinite;
         min-width: 160px;
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--bg-card);
         backdrop-filter: blur(5px);
     }
-
-    .card-1 {
-        animation-delay: 0s;
-    }
-
-    .card-2 {
-        animation-delay: 1s;
-    }
-
-    .card-3 {
-        animation-delay: 2s;
-    }
-
-    .card-4 {
-        animation-delay: 3s;
-    }
+    .card-1 { animation-delay: 0s; }
+    .card-2 { animation-delay: 1s; }
+    .card-3 { animation-delay: 2s; }
+    .card-4 { animation-delay: 3s; }
 
     .center-circle i {
         animation: rotatePulse 8s linear infinite;
     }
 
     @keyframes float {
-
-        0%,
-        100% {
-            transform: translateY(0);
-        }
-
-        50% {
-            transform: translateY(-15px);
-        }
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
     }
 
     @keyframes rotatePulse {
-        0% {
-            transform: rotate(0deg) scale(1);
-        }
+        0%   { transform: rotate(0deg) scale(1); }
+        50%  { transform: rotate(180deg) scale(1.1); }
+        100% { transform: rotate(360deg) scale(1); }
+    }
 
-        50% {
-            transform: rotate(180deg) scale(1.1);
-        }
+    .teacher-highlight-card {
+        display: flex;
+        flex-direction: column;
+        transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+        border-left: 4px solid var(--primary-color) !important;
+    }
+    .teacher-highlight-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px rgba(74, 144, 226, 0.15) !important;
+    }
+    .teacher-avatar {
+        box-shadow: 0 4px 12px rgba(74, 144, 226, 0.25);
+        transition: transform 0.3s ease;
+    }
+    .teacher-highlight-card:hover .teacher-avatar { transform: scale(1.1); }
 
-        100% {
-            transform: rotate(360deg) scale(1);
-        }
+    .new-glow-badge {
+        background: linear-gradient(135deg, #00c853, #00e676);
+        color: white;
+        animation: glowPulse 2s ease-in-out infinite;
+        box-shadow: 0 0 8px rgba(0, 200, 83, 0.4);
+    }
+    @keyframes glowPulse {
+        0%, 100% { box-shadow: 0 0 8px rgba(0, 200, 83, 0.4); }
+        50%       { box-shadow: 0 0 18px rgba(0, 200, 83, 0.7); }
+    }
+
+    .new-pulse-badge { animation: badgePop 2s ease-in-out infinite; }
+    @keyframes badgePop {
+        0%, 100% { transform: scale(1); }
+        50%       { transform: scale(1.05); }
+    }
+
+    .skills-ticker-section {
+        width: 100%;
+        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e40af 100%);
+        padding: 18px 0 22px;
+        overflow: hidden;
+        box-shadow: 0 6px 30px rgba(30,58,138,0.35);
+        position: relative;
+        z-index: 10;
+    }
+    .skills-ticker-section::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at top left, rgba(99,179,237,0.15) 0%, transparent 60%),
+                    radial-gradient(ellipse at bottom right, rgba(167,139,250,0.1) 0%, transparent 60%);
+        pointer-events: none;
+    }
+    .skills-ticker-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 28px 14px;
+        position: relative;
+    }
+    .skills-ticker-live-dot {
+        width: 10px; height: 10px;
+        border-radius: 50%;
+        background: #4ade80;
+        box-shadow: 0 0 0 0 rgba(74,222,128,0.6);
+        animation: livePulse 2s ease-in-out infinite;
+        flex-shrink: 0;
+    }
+    @keyframes livePulse {
+        0%   { box-shadow: 0 0 0 0 rgba(74,222,128,0.6); }
+        70%  { box-shadow: 0 0 0 8px rgba(74,222,128,0); }
+        100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+    }
+    .skills-ticker-header-text {
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.7);
+        flex: 1;
+    }
+    .skills-ticker-browse-btn {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #93c5fd;
+        text-decoration: none;
+        padding: 4px 12px;
+        border: 1px solid rgba(147,197,253,0.35);
+        border-radius: 20px;
+        transition: all 0.2s;
+        white-space: nowrap;
+        letter-spacing: 0.04em;
+    }
+    .skills-ticker-browse-btn:hover {
+        background: rgba(147,197,253,0.15);
+        color: #bfdbfe;
+        border-color: rgba(147,197,253,0.6);
+    }
+    .skills-ticker-track-wrap {
+        overflow: hidden;
+        position: relative;
+        padding: 4px 0;
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    }
+    .skills-ticker-track {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        white-space: nowrap;
+        padding: 2px 28px;
+        will-change: transform;
+        animation: tickerScroll 35s linear infinite;
+    }
+    .skills-ticker-track:hover { animation-play-state: paused; }
+    @keyframes tickerScroll {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    .ticker-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 16px 7px 10px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: 40px;
+        text-decoration: none;
+        color: #e2e8f0;
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s, transform 0.18s;
+        flex-shrink: 0;
+        white-space: nowrap;
+        backdrop-filter: blur(4px);
+    }
+    .ticker-pill:hover {
+        background: rgba(255,255,255,0.16);
+        border-color: rgba(255,255,255,0.3);
+        color: #ffffff;
+        transform: translateY(-1px);
+    }
+    .ticker-pill-icon {
+        width: 28px; height: 28px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #3b82f6, #818cf8);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.72rem;
+        color: white;
+        flex-shrink: 0;
+    }
+    .ticker-pill-name {
+        font-weight: 600;
+        color: #f1f5f9;
+    }
+    .ticker-pill-count {
+        font-size: 0.7rem;
+        font-weight: 700;
+        background: rgba(74,222,128,0.2);
+        color: #86efac;
+        border-radius: 10px;
+        padding: 1px 7px;
+        border: 1px solid rgba(74,222,128,0.3);
+    }
+    .ticker-pill-dot {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: #4ade80;
+        box-shadow: 0 0 5px #4ade80;
+        animation: liveDot 1.5s ease-in-out infinite;
+        flex-shrink: 0;
+    }
+    @keyframes liveDot {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.3; }
+    }
+    html.dark-mode .skills-ticker-section {
+        background: linear-gradient(135deg, #0d1117 0%, #0f1f40 50%, #1a2a6c 100%);
+        box-shadow: 0 6px 30px rgba(0,0,0,0.5);
+    }
+
+    #skill-toast-container {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        pointer-events: none;
+    }
+    .skill-toast {
+        pointer-events: all;
+        background: var(--bg-card);
+        border-radius: 18px;
+        box-shadow: 0 12px 40px rgba(37,99,235,0.2), 0 3px 12px rgba(0,0,0,0.1);
+        display: flex;
+        flex-direction: column;
+        min-width: 310px;
+        max-width: 360px;
+        border-top: 3px solid transparent;
+        background-clip: padding-box;
+        position: relative;
+        overflow: hidden;
+        transform: translateX(420px);
+        opacity: 0;
+        cursor: pointer;
+        transition: transform 0.5s cubic-bezier(0.22,1,0.36,1), opacity 0.4s ease;
+    }
+    .skill-toast::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #3b82f6, #818cf8, #06b6d4);
+    }
+    .skill-toast.show {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    .skill-toast.hide {
+        transform: translateX(420px);
+        opacity: 0;
+    }
+    .skill-toast:hover { box-shadow: 0 16px 50px rgba(37,99,235,0.3), 0 4px 16px rgba(0,0,0,0.12); }
+    .skill-toast-inner {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px 16px 12px;
+    }
+    .skill-toast-icon {
+        width: 44px; height: 44px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #3b82f6, #818cf8);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        color: white;
+        box-shadow: 0 4px 12px rgba(59,130,246,0.4);
+    }
+    .skill-toast-body { flex: 1; min-width: 0; }
+    .skill-toast-label {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #3b82f6;
+        margin-bottom: 2px;
+    }
+    .skill-toast-title {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--text-main);
+        margin-bottom: 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .skill-toast-text {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        line-height: 1.4;
+    }
+    .skill-toast-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px 12px;
+        gap: 8px;
+    }
+    .skill-toast-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(59,130,246,0.1);
+        color: #3b82f6;
+        border-radius: 20px;
+        padding: 3px 10px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        border: 1px solid rgba(59,130,246,0.2);
+    }
+    .skill-toast-cta {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: white;
+        background: linear-gradient(135deg, #3b82f6, #6366f1);
+        border-radius: 20px;
+        padding: 4px 12px;
+        text-decoration: none;
+        transition: opacity 0.2s;
+        white-space: nowrap;
+    }
+    .skill-toast-cta:hover { opacity: 0.85; color: white; }
+    .skill-toast-close {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        font-size: 0.8rem;
+        padding: 4px 6px;
+        border-radius: 8px;
+        transition: all 0.2s;
+        line-height: 1;
+        flex-shrink: 0;
+        position: absolute;
+        top: 10px; right: 12px;
+    }
+    .skill-toast-close:hover { background: rgba(0,0,0,0.06); color: var(--text-main); }
+    .skill-toast-progress {
+        position: absolute;
+        bottom: 0; left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #3b82f6, #818cf8, #06b6d4);
+        border-radius: 0 0 18px 18px;
+        width: 100%;
+        transform-origin: left;
+    }
+    html.dark-mode .skill-toast {
+        box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 3px 12px rgba(0,0,0,0.3);
+    }
+    html.dark-mode .skill-toast-label { color: #93c5fd; }
+    html.dark-mode .skill-toast-icon  { box-shadow: 0 4px 12px rgba(59,130,246,0.25); }
+    html.dark-mode .skill-toast-badge { background: rgba(59,130,246,0.15); color: #93c5fd; border-color: rgba(59,130,246,0.3); }
+
+    html.dark-mode .recent-teachers-section {
+        background: linear-gradient(180deg, #0d1117 0%, #161b22 100%) !important;
+    }
+    html.dark-mode .teacher-highlight-card {
+        background: #161b22 !important;
+        border-color: var(--primary-color) !important;
+    }
+    html.dark-mode .teacher-highlight-card:hover {
+        box-shadow: 0 20px 40px rgba(74, 144, 226, 0.1) !important;
+    }
+    html.dark-mode .teacher-highlight-card .text-dark { color: #c9d1d9 !important; }
+    html.dark-mode .teacher-highlight-card .badge.bg-light {
+        background: #30363d !important;
+        color: #8b949e !important;
+        border-color: #30363d !important;
+    }
+    html.dark-mode .teacher-highlight-card .badge.bg-primary.bg-opacity-10 {
+        background: rgba(74, 144, 226, 0.15) !important;
+    }
+
+    @media (max-width: 576px) {
+        #skill-toast-container { bottom: 14px; right: 14px; left: 14px; }
+        .skill-toast { min-width: unset; max-width: 100%; }
+        .skills-ticker-header { padding: 0 16px 12px; }
+        .skills-ticker-track { padding: 2px 16px; }
     }
 </style>
 
 <script>
-    // Initialize AOS
-    AOS.init({
-        duration: 800,
-        easing: 'ease-out-cubic',
-        once: true,
-        offset: 50
-    });
+    AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true, offset: 50 });
+
+    (function () {
+        const CATEGORY_ICONS = {
+            'Programming':        'fa-code',
+            'Web Development':    'fa-globe',
+            'Mobile Development': 'fa-mobile-alt',
+            'Data & AI':          'fa-brain',
+            'Design':             'fa-paint-brush',
+            'Marketing':          'fa-bullhorn',
+            'Technology':         'fa-microchip',
+        };
+        const PILL_GRADIENTS = [
+            'linear-gradient(135deg,#3b82f6,#818cf8)',
+            'linear-gradient(135deg,#06b6d4,#3b82f6)',
+            'linear-gradient(135deg,#8b5cf6,#ec4899)',
+            'linear-gradient(135deg,#10b981,#3b82f6)',
+            'linear-gradient(135deg,#f59e0b,#ef4444)',
+            'linear-gradient(135deg,#6366f1,#06b6d4)',
+        ];
+
+        function getCatIcon(cat) {
+            return CATEGORY_ICONS[cat] || 'fa-graduation-cap';
+        }
+        function skillUrl(skillId) {
+            return '/match/?skill_id=' + skillId;
+        }
+
+        function buildTicker(skills) {
+            if (!skills || skills.length === 0) return;
+            const section = document.getElementById('skills-ticker-section');
+            const track   = document.getElementById('skills-ticker-track');
+
+            const items = [...skills, ...skills];
+            let html = '';
+            items.forEach((s, i) => {
+                const icon     = getCatIcon(s.category);
+                const count    = s.teacher_count;
+                const label    = count === 1 ? '1 teacher' : count + ' teachers';
+                const gradient = PILL_GRADIENTS[i % PILL_GRADIENTS.length];
+                html += `
+                    <a href="${skillUrl(s.skill_id)}" class="ticker-pill" title="Learn ${s.skill_name} — ${label} ready">
+                        <span class="ticker-pill-dot"></span>
+                        <span class="ticker-pill-icon" style="background:${gradient}">
+                            <i class="fas ${icon}"></i>
+                        </span>
+                        <span class="ticker-pill-name">${s.skill_name}</span>
+                        <span class="ticker-pill-count">${label}</span>
+                    </a>`;
+            });
+            track.innerHTML = html;
+
+            const speed = Math.max(25, skills.length * 4);
+            track.style.animationDuration = speed + 's';
+
+            section.style.display = 'block';
+        }
+
+        let allSkills    = [];
+        let toastIndex   = 0;
+
+        function createToast(skill) {
+            const container = document.getElementById('skill-toast-container');
+            const el  = document.createElement('div');
+            el.className = 'skill-toast';
+            const icon    = getCatIcon(skill.category);
+            const count   = skill.teacher_count;
+            const teachers = skill.teachers && skill.teachers.length
+                ? skill.teachers.join(', ') + (count > 2 ? ' & more' : '')
+                : null;
+            const teacherLine = teachers
+                ? `<div class="skill-toast-text"><i class="fas fa-user-graduate me-1"></i>${teachers} ready to teach</div>`
+                : `<div class="skill-toast-text"><i class="fas fa-users me-1"></i>${count} teacher${count > 1 ? 's' : ''} available</div>`;
+
+            const url = skillUrl(skill.skill_id);
+
+            el.innerHTML = `
+                <button class="skill-toast-close" onclick="dismissToast(this);event.stopPropagation();" title="Dismiss">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="skill-toast-inner">
+                    <div class="skill-toast-icon"><i class="fas ${icon}"></i></div>
+                    <div class="skill-toast-body">
+                        <div class="skill-toast-label">📡 Live Skill Available</div>
+                        <div class="skill-toast-title">${skill.skill_name}</div>
+                        ${teacherLine}
+                    </div>
+                </div>
+                <div class="skill-toast-footer">
+                    <span class="skill-toast-badge"><i class="fas fa-tag me-1"></i>${skill.category}</span>
+                    <a href="${url}" class="skill-toast-cta" onclick="event.stopPropagation();">Request Session →</a>
+                </div>
+                <div class="skill-toast-progress" id="toast-progress-${toastIndex}"></div>`;
+
+            el.addEventListener('click', () => { window.location.href = url; });
+
+            container.appendChild(el);
+
+            requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+
+            const prog = el.querySelector('.skill-toast-progress');
+            if (prog) {
+                prog.style.transition = 'transform 11s linear';
+                requestAnimationFrame(() => requestAnimationFrame(() => {
+                    prog.style.transform = 'scaleX(0)';
+                }));
+            }
+
+            el._dismissTimeout = setTimeout(() => dismissToast(el.querySelector('.skill-toast-close')), 11000);
+            return el;
+        }
+
+        window.dismissToast = function (btn) {
+            const toast = btn ? btn.closest('.skill-toast') : null;
+            if (!toast) return;
+            clearTimeout(toast._dismissTimeout);
+            toast.classList.remove('show');
+            toast.classList.add('hide');
+            setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 500);
+        };
+
+        function showNextToast() {
+            if (!allSkills.length) return;
+            const skill = allSkills[toastIndex % allSkills.length];
+            toastIndex++;
+            createToast(skill);
+            setTimeout(showNextToast, 12000);
+        }
+
+        fetch('/api/available-skills/')
+            .then(r => r.json())
+            .then(data => {
+                if (!data.skills || data.skills.length === 0) return;
+
+                buildTicker(data.skills);
+
+                allSkills = data.skills.slice().sort(() => 0.5 - Math.random());
+
+                setTimeout(showNextToast, 3000);
+            })
+            .catch(() => {});
+    })();
 </script>
 {% endblock %}

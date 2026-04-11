@@ -1,76 +1,35 @@
-/* =========================================
-   PREMIUM SKILL EXCHANGE NETWORK
-   Modern Glassmorphism Design System
-   =========================================
-
-   This stylesheet defines the entire visual design of the app.
-   It uses a "glassmorphism" style — frosted glass effects with
-   blurred backgrounds and semi-transparent cards.
-
-   Architecture:
-     1. CSS Variables (design tokens) — colors, shadows, radii, transitions
-     2. Global styles — body, background animation
-     3. Component styles — navbar, hero, cards, buttons, etc.
-     4. Animations — keyframes for various effects
-     5. Responsive — mobile/tablet breakpoints
-     6. Utility classes — reusable helpers
-
-   Key design techniques used:
-     - backdrop-filter: blur() — creates frosted glass effect
-     - CSS gradients — for colorful backgrounds and text
-     - CSS custom properties (--var) — for consistent theming
-     - clamp() — responsive font sizes without media queries
-   ========================================= */
-
-/* Import Inter font from Google Fonts for a modern, clean look */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-
-/* =========================================
-   DESIGN TOKENS (CSS Custom Properties)
-   =========================================
-   Change these variables to update the entire color scheme.
-   All components reference these instead of hardcoded values. */
-
 :root {
-    /* Gradient presets — used on buttons, cards, backgrounds */
     --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
     --dark-gradient: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
 
-    /* Glassmorphism properties — frosted glass card look */
     --glass-bg: rgba(255, 255, 255, 0.1);
     --glass-border: rgba(255, 255, 255, 0.2);
     --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
 
-    /* Shadow scale — from subtle to dramatic */
     --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
     --shadow-md: 0 4px 20px rgba(0,0,0,0.12);
     --shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
     --shadow-xl: 0 20px 60px rgba(0,0,0,0.2);
 
-    /* Border radius scale — rounded corners */
     --radius-sm: 12px;
     --radius-md: 16px;
     --radius-lg: 24px;
     --radius-xl: 32px;
 
-    /* Transition presets — smooth animations */
     --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 
-/* =========================================
-   GLOBAL STYLES
-   ========================================= */
-
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* Makes padding/border included in element width */
+    box-sizing: border-box;
 }
 
 body {
@@ -78,12 +37,10 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: #1a202c;
     line-height: 1.6;
-    overflow-x: hidden; /* Prevent horizontal scroll from animations */
+    overflow-x: hidden;
     min-height: 100vh;
 }
 
-/* Animated background overlay — creates subtle moving radial gradients
-   behind all page content. The animation makes the background feel alive. */
 body::before {
     content: '';
     position: fixed;
@@ -96,7 +53,7 @@ body::before {
         radial-gradient(circle at 80% 80%, rgba(165, 180, 252, 0.3) 0%, transparent 50%),
         radial-gradient(circle at 40% 90%, rgba(251, 207, 232, 0.3) 0%, transparent 50%);
     animation: backgroundMove 20s ease infinite;
-    z-index: -1; /* Behind all content */
+    z-index: -1;
 }
 
 @keyframes backgroundMove {
@@ -107,39 +64,31 @@ body::before {
 }
 
 
-/* =========================================
-   PREMIUM NAVBAR
-   =========================================
-   Fixed at top, uses frosted glass effect.
-   Shrinks slightly when user scrolls (via JS adding .scrolled class). */
-
 .navbar {
     background: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(20px) saturate(180%); /* Frosted glass effect */
+    backdrop-filter: blur(20px) saturate(180%);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     padding: 1rem 0 !important;
     position: fixed;
     width: 100%;
     top: 0;
-    z-index: 1000; /* Always on top of other content */
+    z-index: 1000;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     transition: var(--transition);
 }
 
-/* Compact mode when user scrolls down — JS adds this class */
 .navbar.scrolled {
     padding: 0.5rem 0 !important;
     box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
 }
 
-/* Brand/logo text with gradient fill */
 .navbar-brand {
     font-weight: 800;
     font-size: 1.5rem !important;
     background: var(--primary-gradient);
     -webkit-background-clip: text;
     background-clip: text;
-    -webkit-text-fill-color: transparent; /* Makes text show the gradient */
+    -webkit-text-fill-color: transparent;
     transition: var(--transition);
     letter-spacing: -0.5px;
 }
@@ -149,7 +98,6 @@ body::before {
     filter: brightness(1.2);
 }
 
-/* Nav links with animated underline on hover */
 .navbar-nav .nav-link {
     font-weight: 600;
     color: #2d3748 !important;
@@ -160,7 +108,6 @@ body::before {
     font-size: 0.95rem;
 }
 
-/* Animated underline — starts at 0 width, expands on hover */
 .navbar-nav .nav-link::before {
     content: '';
     position: absolute;
@@ -180,13 +127,12 @@ body::before {
 }
 
 .navbar-nav .nav-link:hover::before {
-    width: 60%; /* Underline appears on hover */
+    width: 60%;
 }
 
-/* Navbar buttons (Login, Register) */
 .navbar .btn {
     padding: 0.6rem 1.8rem;
-    border-radius: 50px; /* Pill-shaped */
+    border-radius: 50px;
     font-weight: 600;
     font-size: 0.9rem;
     transition: var(--transition);
@@ -199,11 +145,10 @@ body::before {
 }
 
 .navbar .btn-success:hover {
-    transform: translateY(-2px); /* Lift effect on hover */
+    transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
 }
 
-/* Notification badge — animated pulsing dot on nav items */
 .notification-badge {
     position: relative;
 }
@@ -215,22 +160,16 @@ body::before {
     padding: 0.3em 0.5em;
     border-radius: 50px;
     font-size: 0.7rem;
-    animation: pulse 2s infinite; /* Pulsing animation to draw attention */
+    animation: pulse 2s infinite;
 }
 
-
-/* =========================================
-   HERO SECTION — GLASSMORPHISM
-   =========================================
-   Full-viewport height landing section with centered content.
-   Uses the animated gradient background from body::before. */
 
 .hero-section {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 120px 20px 60px; /* Top padding accounts for fixed navbar */
+    padding: 120px 20px 60px;
     position: relative;
     overflow: hidden;
 }
@@ -238,10 +177,9 @@ body::before {
 .hero-content {
     text-align: center;
     z-index: 2;
-    animation: fadeInUp 0.8s ease-out; /* Slide-up entrance animation */
+    animation: fadeInUp 0.8s ease-out;
 }
 
-/* Responsive hero title — clamp() scales font size between min and max */
 .hero-title {
     font-size: clamp(2.5rem, 6vw, 5rem);
     font-weight: 900;
@@ -252,10 +190,9 @@ body::before {
     text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Animated gradient text — the gradient shifts position over time */
 .gradient-text {
     background: linear-gradient(45deg, #f093fb, #f5576c, #4facfe, #00f2fe);
-    background-size: 300% 300%; /* Oversized so the animation has room to move */
+    background-size: 300% 300%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -279,12 +216,6 @@ body::before {
 }
 
 
-/* =========================================
-   GLASS CARDS
-   =========================================
-   Frosted glass effect cards used throughout the app.
-   The ::before pseudo-element creates a light sweep animation on hover. */
-
 .glass-card {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(30px) saturate(180%);
@@ -297,7 +228,6 @@ body::before {
     overflow: hidden;
 }
 
-/* Light sweep effect — a gradient that slides across on hover */
 .glass-card::before {
     content: '';
     position: absolute;
@@ -310,24 +240,19 @@ body::before {
 }
 
 .glass-card:hover::before {
-    left: 100%; /* Sweep moves from left to right */
+    left: 100%;
 }
 
 .glass-card:hover {
-    transform: translateY(-10px) scale(1.02); /* Lift + slight zoom */
+    transform: translateY(-10px) scale(1.02);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
     border-color: rgba(255, 255, 255, 0.4);
 }
 
 
-/* =========================================
-   STATS GRID
-   =========================================
-   Responsive grid for displaying platform statistics (users, skills, etc.) */
-
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Auto-wrapping columns */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 2rem;
     margin: 4rem 0;
 }
@@ -347,7 +272,6 @@ body::before {
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* Large gradient number in stat cards */
 .stat-number {
     font-size: 3rem;
     font-weight: 800;
@@ -368,12 +292,6 @@ body::before {
 }
 
 
-/* =========================================
-   PREMIUM BUTTONS
-   =========================================
-   All buttons are pill-shaped with gradient backgrounds.
-   The ::before pseudo-element creates a ripple effect on hover. */
-
 .btn {
     padding: 0.9rem 2.5rem;
     border-radius: 50px;
@@ -387,7 +305,6 @@ body::before {
     letter-spacing: 0.5px;
 }
 
-/* Ripple/glow effect — circle expands from center on hover */
 .btn::before {
     content: '';
     position: absolute;
@@ -413,7 +330,7 @@ body::before {
 }
 
 .btn-primary:hover {
-    transform: translateY(-3px); /* Lift on hover */
+    transform: translateY(-3px);
     box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
 }
 
@@ -445,7 +362,6 @@ body::before {
     font-size: 1.1rem;
 }
 
-/* Icon inside buttons — scales up on hover for micro-interaction */
 .btn i {
     margin-right: 0.5rem;
     transition: var(--transition-fast);
@@ -455,12 +371,6 @@ body::before {
     transform: scale(1.2);
 }
 
-
-/* =========================================
-   ACTION CARDS GRID
-   =========================================
-   The main feature cards on the home page (Browse Skills, etc.)
-   Each has a rotating conic gradient border effect on hover. */
 
 .action-grid {
     display: grid;
@@ -481,7 +391,6 @@ body::before {
     overflow: hidden;
 }
 
-/* Rotating conic gradient — creates a spinning light effect on hover */
 .action-card::after {
     content: '';
     position: absolute;
@@ -496,12 +405,12 @@ body::before {
         transparent 120deg
     );
     animation: rotate 4s linear infinite;
-    opacity: 0; /* Hidden by default */
+    opacity: 0;
     transition: var(--transition);
 }
 
 .action-card:hover::after {
-    opacity: 1; /* Show rotation effect on hover */
+    opacity: 1;
 }
 
 @keyframes rotate {
@@ -514,7 +423,6 @@ body::before {
     border-color: rgba(255, 255, 255, 0.5);
 }
 
-/* Circular icon container at top of each action card */
 .action-icon {
     width: 90px;
     height: 90px;
@@ -531,7 +439,7 @@ body::before {
 }
 
 .action-card:hover .action-icon {
-    transform: scale(1.1) rotate(10deg); /* Playful scale + rotate on hover */
+    transform: scale(1.1) rotate(10deg);
     box-shadow: 0 15px 40px rgba(79, 172, 254, 0.5);
 }
 
@@ -548,12 +456,6 @@ body::before {
     margin-bottom: 2rem;
 }
 
-
-/* =========================================
-   FEATURES SECTION
-   =========================================
-   "How It Works" or feature highlights section.
-   Each feature item has an animated top border on hover. */
 
 .features-section {
     padding: 100px 20px;
@@ -596,7 +498,6 @@ body::before {
     position: relative;
 }
 
-/* Animated top border — scales from 0 to full width on hover */
 .feature-item::before {
     content: '';
     position: absolute;
@@ -620,7 +521,6 @@ body::before {
     border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Step number badge */
 .feature-number {
     width: 50px;
     height: 50px;
@@ -648,12 +548,6 @@ body::before {
     line-height: 1.8;
 }
 
-
-/* =========================================
-   SKILL TAGS
-   =========================================
-   Pill-shaped tags displayed in the skills cloud section.
-   Special variants: .hot (warm gradient) and .trending (cool gradient). */
 
 .skills-container {
     padding: 80px 20px;
@@ -683,7 +577,6 @@ body::before {
     overflow: hidden;
 }
 
-/* Light sweep on hover (same technique as glass cards) */
 .skill-tag::before {
     content: '';
     position: absolute;
@@ -706,7 +599,6 @@ body::before {
     color: white;
 }
 
-/* Special skill tag variants */
 .skill-tag.hot {
     background: var(--warning-gradient);
     border: none;
@@ -719,10 +611,6 @@ body::before {
     box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
 }
 
-
-/* =========================================
-   FOOTER
-   ========================================= */
 
 footer {
     background: rgba(26, 32, 44, 0.95) !important;
@@ -737,11 +625,6 @@ footer p {
 }
 
 
-/* =========================================
-   KEYFRAME ANIMATIONS
-   ========================================= */
-
-/* Slide-up entrance animation (used on hero content) */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -753,7 +636,6 @@ footer p {
     }
 }
 
-/* Pulsing effect (used on notification badges) */
 @keyframes pulse {
     0%, 100% {
         transform: scale(1);
@@ -765,7 +647,6 @@ footer p {
     }
 }
 
-/* Floating effect (used on decorative elements) */
 @keyframes float {
     0%, 100% {
         transform: translateY(0px);
@@ -776,29 +657,20 @@ footer p {
 }
 
 
-/* =========================================
-   RESPONSIVE BREAKPOINTS
-   =========================================
-   Adapts layout for tablets and phones. */
-
-/* Tablet and below */
 @media (max-width: 768px) {
     .hero-title {
         font-size: 2.5rem;
     }
 
-    /* Stack cards in single column */
     .action-grid,
     .features-grid {
         grid-template-columns: 1fr;
     }
 
-    /* Stats go to 2 columns on tablet */
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    /* Reduce card padding */
     .glass-card,
     .action-card,
     .feature-item {
@@ -806,7 +678,6 @@ footer p {
     }
 }
 
-/* Phone */
 @media (max-width: 576px) {
     .hero-section {
         padding: 100px 15px 40px;
@@ -817,19 +688,12 @@ footer p {
         font-size: 0.9rem;
     }
 
-    /* Stats stack to single column on small phones */
     .stats-grid {
         grid-template-columns: 1fr;
     }
 }
 
 
-/* =========================================
-   UTILITY CLASSES
-   =========================================
-   Reusable helpers that can be added to any element. */
-
-/* Apply gradient color to text */
 .text-gradient {
     background: var(--primary-gradient);
     -webkit-background-clip: text;
@@ -837,14 +701,12 @@ footer p {
     -webkit-text-fill-color: transparent;
 }
 
-/* Apply glass effect to any element */
 .glass-effect {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Lift element on hover */
 .hover-lift {
     transition: var(--transition);
 }

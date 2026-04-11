@@ -9,8 +9,6 @@ if settings.FIREBASE_SERVICE_ACCOUNT and not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 
 
-# Firebase Token Authentication
-
 class FirebaseAuthentication(authentication.BaseAuthentication):
 
     def authenticate(self, request):

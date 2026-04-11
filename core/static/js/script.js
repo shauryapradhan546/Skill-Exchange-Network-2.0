@@ -1,5 +1,3 @@
-// script.js — Skill Exchange Network
-
 document.addEventListener('DOMContentLoaded', function () {
     initializeCounters();
     initializeAnimations();
@@ -9,8 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeTooltips();
 });
 
-
-// Live Counters
 
 function initializeCounters() {
     const counters = document.querySelectorAll('.live-counter, .stat-number');
@@ -49,8 +45,6 @@ function initializeCounters() {
 }
 
 
-// Animations
-
 function initializeAnimations() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -83,8 +77,6 @@ function initializeAnimations() {
 }
 
 
-// Navbar
-
 function initializeNavbar() {
     const navbar = document.querySelector('.navbar');
     if (!navbar) return;
@@ -93,8 +85,6 @@ function initializeNavbar() {
     });
 }
 
-
-// Form Validation
 
 function initializeFormValidation() {
     document.querySelectorAll('form').forEach(form => {
@@ -113,8 +103,6 @@ function initializeFormValidation() {
     });
 }
 
-
-// Particles
 
 function initializeParticles() {
     const heroSection = document.querySelector('.hero-section');
@@ -147,8 +135,6 @@ function initializeParticles() {
 }
 
 
-// Tooltips
-
 function initializeTooltips() {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     if (typeof bootstrap !== 'undefined') {
@@ -156,8 +142,6 @@ function initializeTooltips() {
     }
 }
 
-
-// Notification System
 
 function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
@@ -190,8 +174,6 @@ function getNotificationIcon(type) {
 }
 
 
-// Utility
-
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -208,8 +190,6 @@ function getCookie(name) {
 }
 
 
-// Notification Styles
-
 const customStyles = document.createElement('style');
 customStyles.textContent = `
     .premium-notification {
@@ -219,7 +199,7 @@ customStyles.textContent = `
         min-width: 350px;
         max-width: 450px;
         padding: 1.2rem 1.5rem;
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--bg-card, rgba(255, 255, 255, 0.97));
         backdrop-filter: blur(20px);
         border-radius: 16px;
         box-shadow: 0 10px 40px rgba(0,0,0,0.2);
@@ -236,7 +216,7 @@ customStyles.textContent = `
     .premium-notification.warning { border-left-color: #fee140; }
     .notification-content {
         display: flex; align-items: center;
-        color: #2d3748; font-weight: 600; flex: 1;
+        color: var(--text-main, #2d3748); font-weight: 600; flex: 1;
     }
     .notification-close {
         background: none; border: none;

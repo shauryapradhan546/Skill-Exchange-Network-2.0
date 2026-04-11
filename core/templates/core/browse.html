@@ -1,32 +1,11 @@
 {% extends "core/base.html" %}
 {% load static %}
-{% comment %}
-    browse.html — Browse Skills Page
 
-    Displays all available skills in a searchable, filterable grid.
-    Each skill card shows the name, category, teacher count, and a dynamic
-    icon (chosen via template logic).
-    Clicking a card navigates to match.html to find teachers for that skill.
-
-    Template variables from views.py/browse_view():
-      - skills: Queryset of Skill objects annotated with teacher_count
-      - categories: List of unique category names for the filter dropdown
-      - search_query: Current search term (if any)
-      - selected_category: Currently selected category filter
-      - total_skills: Total number of skills in the database
-
-    Sections:
-      1. Header — page title with total skills count
-      2. Search & Filter — search bar + category dropdown
-      3. Active Filters — shows removable filter badges
-      4. Skills Grid — responsive card grid with hover effects
-      5. CTA — encourages users to add their own skills
-{% endcomment %}
 
 {% block title %}Browse Skills - Skill Exchange{% endblock %}
 
 {% block content %}
-<!-- ✨ CLEAN HEADER -->
+
 <div class="position-relative overflow-hidden pt-5 pb-5" style="background: var(--primary-color);">
     <div class="container text-center position-relative z-2">
         <h1 class="text-white mb-3 fw-bolder" style="font-size: 3.5rem; letter-spacing: -1px;" data-aos="fade-down">
@@ -37,18 +16,18 @@
         </p>
     </div>
 
-    <!-- Decorative faint circles -->
+    
     <div class="position-absolute rounded-circle"
         style="width: 400px; height: 400px; background: rgba(255,255,255,0.05); top: -100px; left: -100px;"></div>
     <div class="position-absolute rounded-circle"
         style="width: 300px; height: 300px; background: rgba(255,255,255,0.05); bottom: -150px; right: -50px;"></div>
 </div>
 
-<!-- ✨ SEARCH & FILTER -->
+
 <div class="container position-relative z-3" style="margin-top: -35px;">
     <div class="modern-card p-4 shadow-lg border-0" data-aos="zoom-in">
         <form method="get" class="row g-3 align-items-center">
-            <!-- Search Input -->
+            
             <div class="col-lg-7 col-md-6">
                 <div class="search-wrapper position-relative">
                     <i class="fas fa-search search-icon position-absolute text-muted fs-5"
@@ -60,7 +39,7 @@
                 </div>
             </div>
 
-            <!-- Category Filter -->
+            
             <div class="col-lg-3 col-md-4">
                 <select name="category" class="form-select form-select-lg category-select border-0 bg-light text-dark"
                     onchange="this.form.submit()" style="border-radius: 50px;">
@@ -73,7 +52,7 @@
                 </select>
             </div>
 
-            <!-- Search Button -->
+            
             <div class="col-lg-2 col-md-2">
                 <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm fw-bold">
                     Search
@@ -83,7 +62,7 @@
     </div>
 </div>
 
-<!-- ✨ ACTIVE FILTERS -->
+
 {% if search_query or selected_category %}
 <div class="container mt-4" data-aos="fade-right">
     <div class="d-flex align-items-center gap-3 flex-wrap">
@@ -111,7 +90,7 @@
 </div>
 {% endif %}
 
-<!-- ✨ SKILLS GRID -->
+
 <div class="container py-5">
     <div class="row g-4">
         {% if skills %}
@@ -119,7 +98,7 @@
         <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
             <div class="skill-card modern-card h-100 p-0 text-center overflow-hidden position-relative border-0 shadow-sm"
                 data-skill-id="{{ skill.id }}" style="cursor: pointer; background: white;">
-                <!-- Category Badge -->
+                
                 <div class="position-absolute top-0 end-0 m-3 z-3">
                     <span
                         class="badge bg-light text-primary border border-primary px-2 py-1 rounded-pill category-{{ skill.category|slugify }}">
@@ -127,9 +106,9 @@
                     </span>
                 </div>
 
-                <!-- Card Body -->
+                
                 <div class="p-4 pt-5 pb-3 skill-card-body d-flex flex-column h-100 position-relative z-2">
-                    <!-- Skill Icon -->
+                    
                     <div class="skill-icon d-inline-flex mx-auto align-items-center justify-content-center bg-light text-primary rounded-circle mb-3 transition-transform"
                         style="width: 80px; height: 80px; font-size: 2.5rem;">
                         {% if 'Python' in skill.name %}
@@ -181,17 +160,17 @@
                         {% endif %}
                     </div>
 
-                    <!-- Skill Name -->
+                    
                     <h4 class="fw-bold mb-2 text-dark">{{ skill.name }}</h4>
 
-                    <!-- Teacher Count -->
+                    
                     <div class="text-muted small fw-medium mb-auto">
                         <i class="fas fa-users text-primary me-1"></i>
                         {{ skill.teacher_count }} Teacher{{ skill.teacher_count|pluralize }}
                     </div>
                 </div>
 
-                <!-- Hover Overlay Footer -->
+                
                 <div class="skill-overlay-footer p-3 bg-light border-top"
                     style="transition: transform 0.3s; transform: translateY(100%); position: absolute; bottom:0; left:0; width:100%; z-index: 3;">
                     <a href="{% url 'match' %}?skill_id={{ skill.id }}"
@@ -203,7 +182,7 @@
         </div>
         {% endfor %}
         {% else %}
-        <!-- No Results -->
+        
         <div class="col-12 mt-4">
             <div class="modern-card text-center py-5 shadow-sm border-0" data-aos="zoom-in" style="background: white;">
                 <div class="mb-4">
@@ -229,7 +208,7 @@
     </div>
 </div>
 
-<!-- ✨ CTA SECTION -->
+
 <div class="container my-5 pb-4">
     <div class="modern-card text-center py-5 position-relative overflow-hidden border-0 shadow-md" data-aos="zoom-in"
         style="background: linear-gradient(135deg, var(--bg-card) 0%, #f0f4f8 100%);">
@@ -251,7 +230,7 @@
     </div>
 </div>
 
-<!-- ✨ AOS ANIMATION -->
+
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 

@@ -6,12 +6,12 @@ from django.db.models import Q, Count
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.http import HttpResponse, JsonResponse
+from django.utils import timezone
+from datetime import timedelta
 import json
 from .models import Skill, User, UserTeaches, ExchangeRequest
 from .utils import send_schedule_notification, send_meeting_link_notification, send_custom_notification
 
-
-# Authentication
 
 @csrf_protect
 def login_view(request):
@@ -94,7 +94,6 @@ def register_view(request):
 
     if not Skill.objects.exists():
         Skill.objects.bulk_create([
-            # Programming & Development
             Skill(name="Python Programming", category="Programming"),
             Skill(name="JavaScript", category="Programming"),
             Skill(name="Java Programming", category="Programming"),
@@ -105,30 +104,25 @@ def register_view(request):
             Skill(name="Flask", category="Web Development"),
             Skill(name="Angular", category="Web Development"),
             Skill(name="Vue.js", category="Web Development"),
-            # Mobile Development
             Skill(name="Android Development", category="Mobile Development"),
             Skill(name="iOS Development", category="Mobile Development"),
             Skill(name="React Native", category="Mobile Development"),
             Skill(name="Flutter", category="Mobile Development"),
-            # Data & AI
             Skill(name="Data Science", category="Data & AI"),
             Skill(name="Machine Learning", category="Data & AI"),
             Skill(name="Deep Learning", category="Data & AI"),
             Skill(name="Data Analysis", category="Data & AI"),
             Skill(name="SQL & Databases", category="Data & AI"),
-            # Design
             Skill(name="UI/UX Design", category="Design"),
             Skill(name="Graphic Design", category="Design"),
             Skill(name="Adobe Photoshop", category="Design"),
             Skill(name="Figma", category="Design"),
             Skill(name="Video Editing", category="Design"),
             Skill(name="3D Modeling", category="Design"),
-            # Marketing
             Skill(name="Digital Marketing", category="Marketing"),
             Skill(name="Content Writing", category="Marketing"),
             Skill(name="SEO", category="Marketing"),
             Skill(name="Social Media Marketing", category="Marketing"),
-            # Technology
             Skill(name="Cloud Computing", category="Technology"),
             Skill(name="Cybersecurity", category="Technology"),
             Skill(name="DevOps", category="Technology"),
@@ -221,17 +215,27 @@ def logout_view(request):
     return redirect('index')
 
 
-# Main Views
-
 def index(request):
     total_users = User.objects.count()
     total_skills = Skill.objects.count()
     total_exchanges = ExchangeRequest.objects.filter(status='accepted').count()
 
+    seven_days_ago = timezone.now() - timedelta(days=7)
+
+    recent_teachers_qs = UserTeaches.objects.filter(
+        created_at__gte=seven_days_ago
+    ).select_related('user', 'skill').order_by('-created_at')
+
+    if request.user.is_authenticated:
+        recent_teachers_qs = recent_teachers_qs.exclude(user=request.user)
+
+    recent_teachers = recent_teachers_qs[:6]
+
     context = {
         'total_users': total_users,
         'total_skills': total_skills,
         'total_exchanges': total_exchanges,
+        'recent_teachers': recent_teachers,
     }
 
     if request.user.is_authenticated:
@@ -316,8 +320,6 @@ def sessions_view(request):
         'learning_sessions': learning_sessions,
     })
 
-
-# Exchange Requests
 
 @csrf_protect
 @login_required
@@ -411,8 +413,6 @@ def reject_exchange(request, exchange_id):
     return redirect('profile')
 
 
-# Skill Management
-
 @login_required
 def add_skill(request):
     if request.method == 'POST':
@@ -467,8 +467,6 @@ def remove_skill(request, teach_id):
 
     return redirect('profile')
 
-
-# Session Management
 
 @csrf_protect
 @login_required

@@ -1,5 +1,3 @@
-// firebase.js — Firebase Authentication Module
-
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import {
     getAuth,
@@ -13,8 +11,6 @@ import {
 const app = initializeApp(window.FIREBASE_CONFIG);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
-
-// Django Session Helper
 
 async function sendToDjango(user) {
     const resp = await fetch('/firebase-login/', {
@@ -33,8 +29,6 @@ async function sendToDjango(user) {
     if (!data.success) throw new Error(data.error || 'Authentication failed on server');
 }
 
-// Redirect Auth Handler
-
 getRedirectResult(auth).then(async result => {
     if (result && result.user) {
         try {
@@ -45,8 +39,6 @@ getRedirectResult(auth).then(async result => {
         }
     }
 }).catch(() => {});
-
-// Firebase Auth API
 
 window.firebaseAuth = {
     googleSignIn: async () => {

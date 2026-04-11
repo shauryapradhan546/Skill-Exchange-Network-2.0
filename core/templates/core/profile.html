@@ -1,42 +1,23 @@
 {% extends "core/base.html" %}
 {% load static %}
-{% comment %}
-    profile.html — User Dashboard / Profile Page
 
-    The main dashboard for logged-in users. Shows personal info and all
-    teaching/learning activity in a two-column layout.
-
-    Template variables from views.py/profile_view():
-      - teaches: UserTeaches objects (skills this user teaches)
-      - incoming_requests: Pending ExchangeRequests where user is the receiver
-      - sent_requests: ExchangeRequests where user is the requester
-      - accepted_exchanges: Accepted exchanges involving this user
-
-    Layout:
-      Left column (col-lg-8):
-        - Skills I Teach — grid of skill cards with remove buttons
-        - Incoming Requests — pending requests with accept/reject buttons
-      Right column (col-lg-4):
-        - My Sent Requests — list with status badges (pending/accepted/rejected)
-        - Active Exchanges — accepted exchanges with "Schedule" button
-{% endcomment %}
 
 {% block title %}My Profile - Skill Exchange{% endblock %}
 
 {% block content %}
-<!-- ✅ PROFILE HEADER -->
+
 <div class="position-relative overflow-hidden pt-5 pb-5 mb-4"
     style="background: white; border-bottom: 1px solid var(--border-color);">
-    <!-- Background accents -->
+    
     <div class="position-absolute top-0 start-0 w-100 h-100"
         style="background: radial-gradient(circle at top right, rgba(74, 144, 226, 0.08) 0%, transparent 60%);"></div>
 
     <div class="container position-relative z-1 pt-4">
         <div class="row align-items-center">
-            <!-- Profile Info -->
+            
             <div class="col-lg-8" data-aos="fade-right">
                 <div class="d-flex align-items-center gap-4">
-                    <!-- Avatar -->
+                    
                     <div class="position-relative">
                         <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle shadow-sm"
                             style="width: 120px; height: 120px; font-size: 3.5rem;">
@@ -46,7 +27,7 @@
                             style="width: 30px; height: 30px; border: 3px solid white;"></div>
                     </div>
 
-                    <!-- User Details -->
+                    
                     <div>
                         <h1 class="text-dark mb-2 fw-bolder" style="font-size: 2.5rem;">
                             {{ user.first_name }} {{ user.last_name }}
@@ -64,7 +45,7 @@
                 </div>
             </div>
 
-            <!-- Stats -->
+            
             <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-left">
                 <div class="modern-card border-0 shadow-sm p-4 bg-white" style="border-radius: 20px;">
                     <div class="row text-center">
@@ -85,12 +66,12 @@
     </div>
 </div>
 
-<!-- ✅ DASHBOARD CONTENT -->
+
 <div class="container">
     <div class="row g-4">
-        <!-- LEFT COLUMN - Skills & Requests -->
+        
         <div class="col-lg-8">
-            <!-- Teaching Skills -->
+            
             <div class="modern-card bg-white border-0 shadow-sm mb-4" data-aos="fade-up">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3 class="text-dark mb-0 fw-bolder">
@@ -108,7 +89,7 @@
                     <div class="col-md-6">
                         <div class="p-4 position-relative h-100 transition-transform hover-shadow"
                             style="background: var(--bg-body); border-radius: 16px; border: 1px solid var(--border-color);">
-                            <!-- ✅ Remove Button -->
+                            
                             <form method="post" action="{% url 'remove_skill' teach.id %}"
                                 class="position-absolute top-0 end-0 m-3" style="z-index: 10;">
                                 {% csrf_token %}
@@ -144,7 +125,7 @@
                 {% endif %}
             </div>
 
-            <!-- Incoming Requests -->
+            
             <div class="modern-card bg-white border-0 shadow-sm mb-4" data-aos="fade-up" data-aos-delay="100">
                 <h3 class="text-dark mb-4 fw-bolder">
                     <i class="fas fa-inbox me-2 text-primary"></i>
@@ -214,9 +195,9 @@
             </div>
         </div>
 
-        <!-- RIGHT COLUMN - Activity -->
+        
         <div class="col-lg-4">
-            <!-- Sent Requests -->
+            
             <div class="modern-card bg-white border-0 shadow-sm mb-4" data-aos="fade-up" data-aos-delay="200">
                 <h4 class="text-dark mb-4 fw-bolder">
                     <i class="fas fa-paper-plane me-2 text-primary"></i>My Sent Requests
@@ -254,7 +235,7 @@
                 {% endif %}
             </div>
 
-            <!-- Active Exchanges -->
+            
             <div class="modern-card bg-white border-0 shadow-sm" data-aos="fade-up" data-aos-delay="300">
                 <h4 class="text-dark mb-4 fw-bolder">
                     <i class="fas fa-handshake me-2 text-success"></i>Active Exchanges

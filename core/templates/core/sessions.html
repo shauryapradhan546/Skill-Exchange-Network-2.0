@@ -1,30 +1,11 @@
 {% extends "core/base.html" %}
 {% load static %}
-{% comment %}
-    sessions.html — My Learning Sessions Page
 
-    Manages all accepted exchange sessions. Split into two columns:
-      - Teaching sessions (where this user is the teacher/receiver)
-      - Learning sessions (where this user is the student/requester)
-
-    Template variables from views.py/sessions_view():
-      - teaching_sessions: Accepted exchanges where user is the receiver
-      - learning_sessions: Accepted exchanges where user is the requester
-
-    Interactive features (all via JavaScript modals):
-      - Create Meeting: Opens Google Meet/Teams in new tab, user pastes link back
-      - Share/Notify: Opens email or WhatsApp with pre-filled session info
-      - Reschedule: Form to pick new date/time, POSTs to /reschedule-session/
-      - Copy Link: Copies meeting URL to clipboard
-
-    This is the most JavaScript-heavy template in the project.
-    All modals are created dynamically via JS template literals.
-{% endcomment %}
 
 {% block title %}My Sessions - Skill Exchange{% endblock %}
 
 {% block content %}
-<!-- ✅ HEADER -->
+
 <div class="position-relative overflow-hidden pt-5 pb-5 mb-4"
     style="background: white; border-bottom: 1px solid var(--border-color);">
     <div class="position-absolute top-0 start-0 w-100 h-100"
@@ -42,7 +23,7 @@
 
 <div class="container py-5">
     <div class="row g-4">
-        <!-- ✅ TEACHING SESSIONS -->
+        
         <div class="col-lg-6">
             <div class="modern-card bg-white border-0 shadow-sm h-100 p-4" style="border-radius: 20px;"
                 data-aos="fade-right">
@@ -114,7 +95,7 @@
                         {% endif %}
 
                         {% if session.meeting_link %}
-                        <!-- Meeting Link Already Created -->
+                        
                         <div class="p-3 mb-3 bg-white rounded-3 border-success border">
                             <p class="text-dark mb-2 fw-bold"><i class="fas fa-video me-2 text-success"></i>Meeting
                                 Link:</p>
@@ -154,7 +135,7 @@
                             </button>
                         </div>
                         {% else %}
-                        <!-- Create Meeting Link -->
+                        
                         <div class="d-flex flex-wrap gap-2 mt-3">
                             <button
                                 class="btn btn-sm btn-success flex-fill create-meeting-btn rounded-pill fw-bold shadow-sm"
@@ -184,7 +165,7 @@
             </div>
         </div>
 
-        <!-- ✅ LEARNING SESSIONS -->
+        
         <div class="col-lg-6">
             <div class="modern-card bg-white border-0 shadow-sm h-100 p-4" style="border-radius: 20px;"
                 data-aos="fade-left">
@@ -255,7 +236,7 @@
                         </div>
 
                         {% if session.meeting_link %}
-                        <!-- Meeting Link Available -->
+                        
                         <div class="p-3 mb-3 bg-white rounded-3 border border-success">
                             <p class="text-dark mb-2 fw-bold"><i class="fas fa-video me-2 text-success"></i>Meeting
                                 Link:</p>
@@ -294,7 +275,7 @@
                             </button>
                         </div>
                         {% else %}
-                        <!-- Waiting for Teacher to Create Link -->
+                        
                         <div class="p-3 bg-white rounded-3 border-start border-3 border-warning shadow-sm">
                             <small class="text-muted fw-bold">
                                 <i class="fas fa-hourglass-half me-2 text-warning"></i>
