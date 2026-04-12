@@ -120,7 +120,7 @@ def api_available_skills(request):
 
     skills_with_teachers = (
         qs.values('skill__id', 'skill__name', 'skill__category')
-        .annotate(teacher_count=Count('id'))
+        .annotate(teacher_count=Count('user__id', distinct=True))
         .filter(teacher_count__gt=0)
         .order_by('-teacher_count')
     )
@@ -129,7 +129,7 @@ def api_available_skills(request):
         skills_with_teachers = (
             UserTeaches.objects
             .values('skill__id', 'skill__name', 'skill__category')
-            .annotate(teacher_count=Count('id'))
+            .annotate(teacher_count=Count('user__id', distinct=True))
             .filter(teacher_count__gt=0)
             .order_by('-teacher_count')
         )
@@ -146,8 +146,17 @@ def api_available_skills(request):
             teachers_qs_filtered = teachers_qs.exclude(user=request.user)
             teachers_qs = teachers_qs_filtered if teachers_qs_filtered.exists() else teachers_qs
 
-        teachers_qs = teachers_qs[:2]
-        teacher_names = [t.user.first_name or t.user.username for t in teachers_qs]
+        # Keep distinct users
+        seen_users = set()
+        distinct_teachers = []
+        for t in teachers_qs:
+            if t.user.id not in seen_users:
+                seen_users.add(t.user.id)
+                distinct_teachers.append(t)
+            if len(distinct_teachers) >= 2:
+                break
+
+        teacher_names = [t.user.first_name or t.user.username for t in distinct_teachers]
         result.append({
             'skill_id': item['skill__id'],
             'skill_name': item['skill__name'],

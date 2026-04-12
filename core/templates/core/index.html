@@ -464,25 +464,15 @@
         border-color: rgba(147,197,253,0.6);
     }
     .skills-ticker-track-wrap {
-        overflow: hidden;
         position: relative;
         padding: 4px 0;
-        -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-        mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
     }
     .skills-ticker-track {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
         gap: 12px;
-        white-space: nowrap;
         padding: 2px 28px;
-        will-change: transform;
-        animation: tickerScroll 35s linear infinite;
-    }
-    .skills-ticker-track:hover { animation-play-state: paused; }
-    @keyframes tickerScroll {
-        0%   { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
     }
     .ticker-pill {
         display: inline-flex;
@@ -564,8 +554,8 @@
         box-shadow: 0 12px 40px rgba(37,99,235,0.2), 0 3px 12px rgba(0,0,0,0.1);
         display: flex;
         flex-direction: column;
-        min-width: 310px;
-        max-width: 360px;
+        min-width: 340px;
+        max-width: 400px;
         border-top: 3px solid transparent;
         background-clip: padding-box;
         position: relative;
@@ -594,31 +584,31 @@
     .skill-toast-inner {
         display: flex;
         align-items: flex-start;
-        gap: 12px;
-        padding: 16px 16px 12px;
+        gap: 14px;
+        padding: 18px 18px 14px;
     }
     .skill-toast-icon {
-        width: 44px; height: 44px;
-        border-radius: 14px;
+        width: 50px; height: 50px;
+        border-radius: 16px;
         background: linear-gradient(135deg, #3b82f6, #818cf8);
         display: flex; align-items: center; justify-content: center;
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         flex-shrink: 0;
         color: white;
         box-shadow: 0 4px 12px rgba(59,130,246,0.4);
     }
     .skill-toast-body { flex: 1; min-width: 0; }
     .skill-toast-label {
-        font-size: 0.68rem;
+        font-size: 0.72rem;
         font-weight: 700;
         letter-spacing: 0.1em;
         text-transform: uppercase;
         color: #3b82f6;
-        margin-bottom: 2px;
+        margin-bottom: 3px;
     }
     .skill-toast-title {
         font-weight: 700;
-        font-size: 0.95rem;
+        font-size: 1.05rem;
         color: var(--text-main);
         margin-bottom: 3px;
         white-space: nowrap;
@@ -626,7 +616,7 @@
         text-overflow: ellipsis;
     }
     .skill-toast-text {
-        font-size: 0.78rem;
+        font-size: 0.85rem;
         color: var(--text-muted);
         line-height: 1.4;
     }
@@ -634,7 +624,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 16px 12px;
+        padding: 0 18px 14px;
         gap: 8px;
     }
     .skill-toast-badge {
@@ -644,18 +634,18 @@
         background: rgba(59,130,246,0.1);
         color: #3b82f6;
         border-radius: 20px;
-        padding: 3px 10px;
-        font-size: 0.7rem;
+        padding: 4px 12px;
+        font-size: 0.75rem;
         font-weight: 700;
         border: 1px solid rgba(59,130,246,0.2);
     }
     .skill-toast-cta {
-        font-size: 0.72rem;
+        font-size: 0.8rem;
         font-weight: 700;
         color: white;
         background: linear-gradient(135deg, #3b82f6, #6366f1);
         border-radius: 20px;
-        padding: 4px 12px;
+        padding: 6px 14px;
         text-decoration: none;
         transition: opacity 0.2s;
         white-space: nowrap;
@@ -754,7 +744,7 @@
             const section = document.getElementById('skills-ticker-section');
             const track   = document.getElementById('skills-ticker-track');
 
-            const items = [...skills, ...skills];
+            const items = skills;
             let html = '';
             items.forEach((s, i) => {
                 const icon     = getCatIcon(s.category);
@@ -772,10 +762,6 @@
                     </a>`;
             });
             track.innerHTML = html;
-
-            const speed = Math.max(25, skills.length * 4);
-            track.style.animationDuration = speed + 's';
-
             section.style.display = 'block';
         }
 
@@ -817,7 +803,7 @@
 
             el.addEventListener('click', () => { window.location.href = url; });
 
-            container.appendChild(el);
+            container.prepend(el);
 
             requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
 
@@ -829,7 +815,7 @@
                 }));
             }
 
-            el._dismissTimeout = setTimeout(() => dismissToast(el.querySelector('.skill-toast-close')), 11000);
+            el._dismissTimeout = setTimeout(() => dismissToast(el.querySelector('.skill-toast-close')), 12000);
             return el;
         }
 
@@ -847,7 +833,7 @@
             const skill = allSkills[toastIndex % allSkills.length];
             toastIndex++;
             createToast(skill);
-            setTimeout(showNextToast, 12000);
+            setTimeout(showNextToast, 6000);
         }
 
         fetch('/api/available-skills/')
