@@ -4,6 +4,7 @@
 {% block title %}Home - Premium Skill Exchange{% endblock %}
 
 {% block before_content %}
+{% if user.is_authenticated %}
 <section id="skills-ticker-section" class="skills-ticker-section" style="display:none; margin-top: 76px;">
     <div class="skills-ticker-header">
         <span class="skills-ticker-live-dot"></span>
@@ -17,6 +18,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -119,7 +121,7 @@
 
 
 
-{% if recent_teachers %}
+{% if recent_teachers and user.is_authenticated %}
 <div class="py-5 recent-teachers-section">
     <div class="container py-4">
         <div class="text-center mb-5" data-aos="fade-up">
@@ -317,7 +319,9 @@
     </div>
 </div>
 
+{% if user.is_authenticated %}
 <div id="skill-toast-container"></div>
+{% endif %}
 
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -713,6 +717,7 @@
 <script>
     AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true, offset: 50 });
 
+    {% if user.is_authenticated %}
     (function () {
         const CATEGORY_ICONS = {
             'Programming':        'fa-code',
@@ -849,5 +854,6 @@
             })
             .catch(() => {});
     })();
+    {% endif %}
 </script>
 {% endblock %}
