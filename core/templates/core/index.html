@@ -716,8 +716,10 @@
 
 <script>
     AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true, offset: 50 });
+</script>
 
-    {% if user.is_authenticated %}
+{% if user.is_authenticated %}
+<script>
     (function () {
         const CATEGORY_ICONS = {
             'Programming':        'fa-code',
@@ -854,6 +856,6 @@
             })
             .catch(() => {});
     })();
-    {% endif %}
 </script>
+{% endif %}
 {% endblock %}
