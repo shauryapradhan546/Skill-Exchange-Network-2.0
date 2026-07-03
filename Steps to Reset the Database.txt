@@ -5,7 +5,7 @@ Steps to Reset the Database
 2. Delete the database file:
 
 powershell
-Remove-Item "D:\Updated Field Project\updated_skill_exchange_network\db.sqlite3"
+Remove-Item "d:\field project\Backup\Skill-Exchange-Network-2.0\db.sqlite3"
 
 3. Re-run migrations to create a fresh database:
 
